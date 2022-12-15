@@ -296,4 +296,34 @@ public class JavaUtilTest {
     assertThat(new JavaUtil().getReturnType(clazz, "methodWithReturnType")).isEqualTo("String");
     assertThat(new JavaUtil().getReturnType(clazz, "methodWithVoidReturnType")).isEqualTo("-");
   }
+
+  /**
+   * tests if the field is a {@link Number}
+   *
+   * @throws NoSuchFieldException
+   * @throws SecurityException
+   */
+  @Test
+  public void testIsNumber() throws NoSuchFieldException, SecurityException {
+
+    assertThat(new JavaUtil().isNumber(clazz, "primitive")).isTrue();
+    assertThat(new JavaUtil().isNumber(clazz, "boxed")).isTrue();
+    assertThat(new JavaUtil().isNumber(clazz, "object")).isFalse();
+  }
+
+  /**
+   * tests if the field is a {@link Comparable}
+   *
+   * @throws NoSuchFieldException
+   * @throws SecurityException
+   */
+  @Test
+  public void testIsComparable() throws NoSuchFieldException, SecurityException {
+
+    assertThat(new JavaUtil().isComparable(clazz, "primitiveComparable")).isTrue();
+    assertThat(new JavaUtil().isComparable(clazz, "boxedComparable")).isTrue();
+    assertThat(new JavaUtil().isComparable(clazz, "complexComparable")).isTrue();
+    assertThat(new JavaUtil().isComparable(clazz, "entity")).isFalse();
+  }
+
 }

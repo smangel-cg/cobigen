@@ -1,5 +1,6 @@
 package com.devonfw.cobigen.templates.devon4j.test.utils.resources;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -27,6 +28,12 @@ public class TestClass {
   private Set<TestEntity> setEntitys;
 
   private DeepEntity deepEntity;
+
+  private boolean primitiveComparable;
+
+  private Boolean boxedComparable;
+
+  private Date complexComparable;
 
   @GET
   public String methodWithReturnType(String one, @PathParam("id") int two) {

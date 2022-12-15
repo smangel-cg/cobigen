@@ -31,7 +31,7 @@ public class JavaUtil {
 
   /**
    * Returns the Object version of a Java primitive or the input if the input isn't a java primitive
-   * 
+   *
    * @param simpleType String
    * @return the corresponding object wrapper type simple name of the input if the input is the name of a primitive java
    *         type. The input itself if not. (e.g. "int" results in "Integer")
@@ -461,4 +461,70 @@ public class JavaUtil {
       return null;
     }
   }
+
+  /**
+   * Checks whether the field of the class is a known Number type.
+   *
+   * @param pojoClass {@link Class} the class object of the pojo
+   * @param fieldName {@link String} the name of the field
+   * @return <code>true</code>, if the field is a Number, else <code>false</code>
+   * @throws NoSuchFieldException indicates that the field does not exist.
+   * @throws SecurityException if the field cannot be accessed.
+   */
+  public boolean isNumber(Class<?> pojoClass, String fieldName) throws NoSuchFieldException, SecurityException {
+
+    if (pojoClass == null) {
+      return false;
+    }
+
+    Field field = pojoClass.getDeclaredField(fieldName);
+    if (field == null) {
+      field = pojoClass.getField(fieldName);
+    }
+    if (field == null) {
+      return false;
+    } else {
+      Class<?> fieldType = field.getType();
+      if (fieldType.isPrimitive()) {
+        // There are only two primitive types of which the boxed versions are not numbers, i.e.,
+        // boolean and char
+        return (fieldType != boolean.class && fieldType != char.class);
+      } else {
+        return Number.class.isAssignableFrom(fieldType);
+      }
+    }
+  }
+
+  /**
+   * Checks whether the field of the class is a known Comparable type.
+   *
+   * @param pojoClass {@link Class} the class object of the pojo
+   * @param fieldName {@link String} the name of the field
+   * @return <code>true</code>, if the field is a Comparable, else <code>false</code>
+   * @throws NoSuchFieldException indicates that the field does not exist.
+   * @throws SecurityException if the field cannot be accessed.
+   */
+  public boolean isComparable(Class<?> pojoClass, String fieldName) throws NoSuchFieldException, SecurityException {
+
+    if (pojoClass == null) {
+      return false;
+    }
+
+    Field field = pojoClass.getDeclaredField(fieldName);
+    if (field == null) {
+      field = pojoClass.getField(fieldName);
+    }
+    if (field == null) {
+      return false;
+    } else {
+      Class<?> fieldType = field.getType();
+      if (fieldType.isPrimitive()) {
+        // Each wrapper of Java primitives is Comparable
+        return true;
+      } else {
+        return Comparable.class.isAssignableFrom(fieldType);
+      }
+    }
+  }
+
 }
